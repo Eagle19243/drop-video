@@ -1,0 +1,98 @@
+.vf_ext_panel_tabcontent tbody tr:nth-of-type(odd) {
+    background-color: #d1ecf1;
+}
+
+#vf_ext_panel i {
+    pointer-events:none;
+}
+
+.vf_ext_panel_tabcontent table{
+    width: 100%;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.vf_ext_panel_tabcontent .img-thumbnail{
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.vf_ext_panel_tabcontent td, .vf_ext_panel_tabcontent th {
+    padding: .75rem;
+}
+
+.vf_ext_panel_tabcontent .btn{
+    color: #fff;
+    text-align: center;
+    width: 100px;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    display: block;
+}
+
+.vf_ext_panel_tabcontent .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.vf_ext_panel_tabcontent .video-title{
+    vertical-align: top;
+}
+
+.video-title a{
+    font-weight: 700;
+    color: black !important;
+}
+
+.video-title a:hover{
+    color: black !important;
+}
+
+.video-title a:visited{
+    color: black !important;
+}
+
+/* Style the tab */
+.vf_ext_panel_tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.vf_ext_panel_tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.vf_ext_panel_tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.vf_ext_panel_tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.vf_ext_panel_tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}

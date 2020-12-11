@@ -1,0 +1,88 @@
+item-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: flex-start;
+    margin: 3px;
+    padding: 2px;
+    width: fit-content;
+    height: fit-content;
+    background-color: #2196f3;
+    border-radius: 7px;
+}
+display-label {
+    background-color: #2196F3;
+    display: flex;
+    padding: 7px;
+}
+display-label text {
+    color: white;
+    font-family: helvvetica, arial, 'Roboto';
+    font-weight: 700;
+    font-size: 16px;
+}
+download-vid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2200ff;
+    border-radius: 5px;
+    padding: 7px;
+    border: 1px dotted cyan;
+    z-index: 9999;
+    position: absolute;
+    margin: 6px 0px 0px 5px;
+}
+download-vid btn {
+    font-family: helvetica,arial, 'Roboto';
+    font-size: 11px;
+    color: white;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+}
+download-vid btn:hover {
+    filter: invert(1);
+}
+download-vid btn:active {
+    transform: scale(1.2);
+}
+/* LOADING BAR:; */
+@keyframes LoadingBarProgress {
+    0%{ background-position:0% 0 }
+
+    to{
+        background-position:125% 0
+    }
+}
+    
+@keyframes LoadingBarEnter{
+    0%{
+        -webkit-transform:scaleX(0);transform:scaleX(0)
+    }
+    to{
+        -webkit-transform:scaleX(1);transform:scaleX(1)
+    }
+}
+
+.loading_bar {
+    font-size: 12px;
+    top: 0%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: helvetica, arial, roboto;
+    position: fixed;
+    height: 25px;
+    background: #27c4f5 -webkit-gradient(linear,left top,right top,from(#27c4f5),color-stop(#a307ba),color-stop(#fd8d32),color-stop(#70c050),to(#27c4f5));
+    background: #27c4f5 -webkit-linear-gradient(left,#27c4f5,#a307ba,#fd8d32,#70c050,#27c4f5);
+    background: #27c4f5 linear-gradient(to right,#27c4f5,#a307ba,#fd8d32,#70c050,#27c4f5);
+    background-size: 500%;
+    -webkit-animation: 2s linear infinite LoadingBarProgress,.5s ease-out LoadingBarEnter;
+    animation: 2s linear infinite LoadingBarProgress,.5s ease-out LoadingBarEnter;
+    -webkit-transform-origin: left;
+    transform-origin: left;
+    width: 100%;
+    z-index: 9999999999;
+}
