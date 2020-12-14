@@ -29,13 +29,17 @@
 .vf_ext_panel_tabcontent .btn{
     color: #fff;
     text-align: center;
-    width: 100px;
+    width: 120px;
     background-color: #dc3545;
     border-color: #dc3545;
     padding: .375rem .75rem;
     line-height: 1.5;
     border-radius: .25rem;
     display: block;
+}
+
+.vf_ext_panel_tabcontent .btn-download {
+    margin-top: 10px;
 }
 
 .vf_ext_panel_tabcontent .btn-danger:hover {

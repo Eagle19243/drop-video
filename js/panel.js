@@ -1,3 +1,7 @@
+function initEvents() {
+    $('body').on('click', '.btn-download', onDownloadButtonClicked);
+}
+
 async function loadYoutubeVideos(query){
     const youtube_videos = await sendMessage({action: 'get_youtube_videos', search_query: query});
     if(youtube_videos['videosFound']){
@@ -55,6 +59,62 @@ async function loadPinterestVideos(query){
     }
 }
 
+async function loadFacebookVideos(query) {
+    const data = await sendMessage({action: 'get_facebook_videos', search_query: query});
+    
+    if (!data['videosFound']) {
+        return;
+    }
+    
+    for (const video of data.videos) {
+        const content = `
+            <tr>
+                <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
+                <td class="video-title">
+                    <a href="${video['url']}" target="_blank">${video['title']}</a>
+                </td>
+                <td>
+                    <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo">
+                        <i class="fa fa-facebook"></i> 
+                        Watch
+                    </a>
+                    <button type="button" 
+                        class="btn btn-primary btn-download" 
+                        title="Download"
+                        data-url="${video['url']}" 
+                        data-website="facebook"
+                    >
+                        <i class="fa fa-download"></i> 
+                        Download
+                    </button>
+                </td>
+            </tr>`;
+        $("#facebook_fragment tbody").append(content);
+    }
+}
+
+async function loadInstagramVideos(query) {
+    const videos = await sendMessage({action: 'get_instagram_videos', search_query: query});
+    
+    if (!videos['videosFound']) {
+        return;
+    }
+    
+    for (const video of videos['videos']) {
+        const content = `
+            <tr>
+                <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
+                <td class="video-title">
+                    <a href="${video['url']}" target="_blank">${video['title']}</a>
+                </td>
+                <td>
+                    <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo"><i class="fa fa-instagram"></i> Watch</a>
+                </td>
+            </tr>`;
+        $("#instagram_fragment tbody").append(content);
+    }
+}
+
 function sendMessage(message){
     return new Promise((resolve,  reject) => {
         chrome.runtime.sendMessage(message, response => resolve(response));
@@ -86,4 +146,12 @@ function openVideosPanel(event){
     $(id).show();
     $(".vf_ext_panel_tablinks").each((index, tablink) => $(tablink).removeClass("active"));
     $(event.target).addClass("active");
+}
+
+async function onDownloadButtonClicked() {
+    await sendMessage({
+        action: 'download_video', 
+        url: $(this).data('url'),
+        website: $(this).data('website'),
+    });
 }

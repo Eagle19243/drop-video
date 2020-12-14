@@ -7,6 +7,9 @@ if(isSearchPage()){
     loadYoutubeVideos(searchText);
     loadVimeoVideos(searchText);
     loadPinterestVideos(searchText);
+    loadFacebookVideos(searchText);
+    loadInstagramVideos(searchText);
+    initEvents();
     // insertSheetAndProcess();
 }
 

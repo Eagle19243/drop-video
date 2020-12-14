@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
     if(request.action == 'get_vimeo_videos'){
         getVimeoVideos(request.search_query)
         .then(response_videos => {
@@ -25,6 +25,29 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         .catch(error => {
             sendResponse({ videosFound: false });
         });
+    }
+    else if(request.action == 'get_facebook_videos'){
+        getFacebookVideos(request.search_query)
+        .then(videos => {
+            console.log('videos:', videos);
+            sendResponse({ videosFound: true, videos: videos });
+        })
+        .catch(error => {
+            sendResponse({ videosFound: false });
+        });
+    }
+    else if(request.action == 'get_instagram_videos'){
+        getYoutubeVideos(request.search_query)
+        .then(videos => {
+            sendResponse({ videosFound: true, videos: videos });
+        })
+        .catch(error => {
+            sendResponse({ videosFound: false });
+        });
+    }
+    else if (request.action === 'download_video') {
+        const downloadUrl = await getDownloadUrl(request.url, request.website);
+        chrome.tabs.create({url: downloadUrl});
     }
     return true;
 });
@@ -64,12 +87,6 @@ function getPinterestVideos(title){
 
 function getVimeoVideos(title){
     return new Promise((resolve, reject) => {
-        // format
-        // [{
-        //     thumbnail,
-        //     title,
-        //     url
-        // }]
         fetch(`https://api.vimeo.com/videos?query=${title}&per_page=100`,{
             headers: {
                 "Authorization": "bearer b99b8cbf68fc04cc4977b99ea95aeb93"
@@ -94,12 +111,6 @@ function getVimeoVideos(title){
 
 function getYoutubeVideos(title){
     return new Promise((resolve, reject) => {
-        // format
-        // [{
-        //     thumbnail,
-        //     title,
-        //     url
-        // }]
         fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=relevance&key=AIzaSyD6Q0keD3k2PY4cbYWVJd4kYtkZ3nLXSZU&q=${title}`)
         .then(resp => resp.json())
         .then(data=>{
@@ -115,5 +126,53 @@ function getYoutubeVideos(title){
             resolve(videos)
         })
       
+    });
+}
+
+async function getFacebookVideos(query){
+    const response = await fetch('http://127.0.0.1:3000/video/get', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query,
+            website: 'facebook',
+        })
+    });
+    const data = await response.json();
+    return data.data;
+}
+
+async function getDownloadUrl(url, website){
+    const response = await fetch('http://127.0.0.1:3000/video/download', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url, website })
+    });
+    const data = await response.json();
+    return data.data;
+}
+
+function getInstagramVideos(title){
+    return new Promise((resolve, reject) => {
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=relevance&key=AIzaSyD6Q0keD3k2PY4cbYWVJd4kYtkZ3nLXSZU&q=${title}`)
+        .then(resp => resp.json())
+        .then(data=>{
+            let videos = data.items.map(item=>{
+                return {
+                    thumbnail: item.snippet.thumbnails.medium.url,
+                    title: item.snippet.title,
+                    url: `https://www.youtube.com/watch?v=${item.id.videoId}`
+                }
+            })
+
+            console.log(videos)
+            resolve(videos)
+        })
     });
 }
