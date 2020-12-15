@@ -1,61 +1,104 @@
 function initEvents() {
-    $('body').on('click', '.btn-download', onDownloadButtonClicked);
+    $('body').on('click', 'button.btn-download', onDownloadButtonClicked);
 }
 
 async function loadYoutubeVideos(query){
-    const youtube_videos = await sendMessage({action: 'get_youtube_videos', search_query: query});
-    if(youtube_videos['videosFound']){
-        for (const video of youtube_videos['videos']) {
-            $("#youtube_fragment")
-            .find("tbody")
-            .append(`<tr>
-                        <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
-                        <td class="video-title">
-                            <a href="${video['url']}" target="_blank">${video['title']}</a>
-                        </td>
-                        <td>
-                            <a href="${video['url']}" target="_blank" class="btn btn-danger text-white" title="Watch on Youtube"><i class="fa fa-youtube-play"></i> Watch</a>
-                        </td>
-                    </tr>`);
-        }
+    const data = await sendMessage({action: 'get_youtube_videos', search_query: query});
+    
+    if (!data['videosFound']) {
+        return;
+    }
+
+    for (const video of data['videos']) {
+        const content = `
+        <tr>
+            <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
+            <td class="video-title">
+                <a href="${video['url']}" target="_blank">${video['title']}</a>
+            </td>
+            <td>
+                <a href="${video['url']}" target="_blank" class="btn btn-danger text-white" title="Watch on Youtube">
+                    <i class="fa fa-youtube-play"></i> 
+                    Watch
+                </a>
+                <a href="${Server_URL}/video/download?website=youtube&url=${encodeURIComponent(video['url'])}"
+                    class="btn btn-primary btn-download"
+                    target="_blank"
+                    title="Download"
+                >
+                    <i class="fa fa-download"></i> 
+                    Download
+                </a>
+            </td>
+        </tr>`;
+
+        $("#youtube_fragment tbody").append(content);
     }
 }
 
 async function loadVimeoVideos(query){
-    const vimeo_videos = await sendMessage({action: 'get_vimeo_videos', search_query: query});
-    if(vimeo_videos['videosFound']){
-        for (const video of vimeo_videos['videos']) {
-            $("#vimeo_fragment")
-            .find("tbody")
-            .append(`<tr>
-                        <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
-                        <td class="video-title">
-                            <a href="${video['url']}" target="_blank">${video['title']}</a>
-                        </td>
-                        <td>
-                            <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo"><i class="fa fa-vimeo"></i> Watch</a>
-                        </td>
-                    </tr>`);
-        }
+    const data = await sendMessage({action: 'get_vimeo_videos', search_query: query});
+
+    if(!data['videosFound']){
+        return;
+    }
+
+    for (const video of data['videos']) {
+        const content = `
+        <tr>
+            <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
+            <td class="video-title">
+                <a href="${video['url']}" target="_blank">${video['title']}</a>
+            </td>
+            <td>
+                <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo">
+                    <i class="fa fa-vimeo"></i> Watch
+                </a>
+                <button type="button" 
+                    class="btn btn-primary btn-download" 
+                    title="Download"
+                    data-url="${video['url']}" 
+                    data-website="instagram"
+                >
+                    <i class="fa fa-download"></i> 
+                    Download
+                </button>
+            </td>
+        </tr>`;
+        $("#vimeo_fragment tbody").append(content);
     }
 }
 
 async function loadPinterestVideos(query){
-    const pinterest_videos = await sendMessage({action: 'get_pinterest_videos', search_query: query});
-    if(pinterest_videos['videosFound']){
-        for (const video of pinterest_videos['videos']) {
-            $("#pinterest_fragment")
-            .find("tbody")
-            .append(`<tr>
-                        <td><img src="${video['thumbnail']}" class="img-thumbnail" width="200"></td>
-                        <td class="video-title">
-                            <a href="${video['url']}" target="_blank">${video['title']}</a>
-                        </td>
-                        <td>
-                            <a href="${video['url']}" target="_blank" class="btn btn-danger" title="Watch on Pinterest"><i class="fa fa-pinterest"></i> Watch</a>
-                        </td>
-                    </tr>`);
-        }
+    const data = await sendMessage({action: 'get_pinterest_videos', search_query: query});
+
+    if(!data['videosFound']){
+        return;
+    }
+
+    for (const video of data['videos']) {
+        const content = `
+        <tr>
+            <td><img src="${video['thumbnail']}" class="img-thumbnail" width="200"></td>
+            <td class="video-title">
+                <a href="${video['url']}" target="_blank">${video['title']}</a>
+            </td>
+            <td>
+                <a href="${video['url']}" target="_blank" class="btn btn-danger" title="Watch on Pinterest">
+                    <i class="fa fa-pinterest"></i> Watch
+                </a>
+                <button type="button" 
+                    class="btn btn-primary btn-download" 
+                    title="Download"
+                    data-url="${video['url']}" 
+                    data-website="instagram"
+                >
+                    <i class="fa fa-download"></i> 
+                    Download
+                </button>
+            </td>
+        </tr>`;
+        $("#pinterest_fragment tbdoy").append(content);
     }
 }
 

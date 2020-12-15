@@ -1,3 +1,5 @@
+const Server_URL = 'http://127.0.0.1:3000';
+
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
     if(request.action == 'get_vimeo_videos'){
         getVimeoVideos(request.search_query)
@@ -48,7 +50,9 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
         });
     }
     else if (request.action === 'download_video') {
-        const downloadUrl = await getDownloadUrl(request.url, request.website);
+        const url = request.url;
+        const website = request.website;
+        const downloadUrl = await getDownloadUrl(url, website);
         chrome.tabs.create({url: downloadUrl});
     }
     return true;

@@ -1,4 +1,5 @@
 var k = false,l = false,m = false;
+const Server_URL = 'http://127.0.0.1:3000';
 
 init();
 
