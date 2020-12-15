@@ -58,7 +58,7 @@ async function loadVimeoVideos(query){
                     class="btn btn-primary btn-download" 
                     title="Download"
                     data-url="${video['url']}" 
-                    data-website="instagram"
+                    data-website="vimeo"
                 >
                     <i class="fa fa-download"></i> 
                     Download
