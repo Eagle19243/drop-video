@@ -70,12 +70,15 @@
             ],
             "css": [
                 "css/font-awesome.min.css",
+                "vendors/ladda/ladda-themeless.min.css",
                 "css/custom-stlye.css",
                 "css/jspanel.css"
             ],
             "js": [
                 "js/jquery-3.5.0.min.js",
                 "js/jquery.waypoints.min.js",
+                "vendors/ladda/spin.min.js",
+                "vendors/ladda/ladda.min.js",
                 "js/jspanel.js",
                 "js/panel.js",
                 "js/content.js"

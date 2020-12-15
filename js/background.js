@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
     else if(request.action == 'get_facebook_videos'){
         getFacebookVideos(request.search_query)
         .then(videos => {
-            console.log('videos:', videos);
+            console.log('get_facebook_videos:', videos);
             sendResponse({ videosFound: true, videos: videos });
         })
         .catch(error => {
@@ -39,7 +39,6 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
         });
     }
     else if(request.action == 'get_instagram_videos'){
-        console.log('get_instagram_videos');
         getInstagramVideos(request.search_query)
         .then(videos => {
             console.log('get_instagram_videos', videos);
@@ -53,7 +52,12 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
         const url = request.url;
         const website = request.website;
         const downloadUrl = await getDownloadUrl(url, website);
-        chrome.tabs.create({url: downloadUrl});
+
+        sendResponse();
+
+        if (downloadUrl) {
+            chrome.tabs.create({url: downloadUrl});
+        }
     }
     return true;
 });

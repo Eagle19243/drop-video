@@ -34,6 +34,7 @@ async function loadYoutubeVideos(query){
 
         $("#youtube_fragment tbody").append(content);
     }
+    hideProgress('#youtube_fragment');
 }
 
 async function loadVimeoVideos(query){
@@ -55,10 +56,11 @@ async function loadVimeoVideos(query){
                     <i class="fa fa-vimeo"></i> Watch
                 </a>
                 <button type="button" 
-                    class="btn btn-primary btn-download" 
+                    class="btn btn-primary btn-download ladda-button" 
                     title="Download"
                     data-url="${video['url']}" 
                     data-website="vimeo"
+                    data-style="slide-right"
                 >
                     <i class="fa fa-download"></i> 
                     Download
@@ -67,11 +69,12 @@ async function loadVimeoVideos(query){
         </tr>`;
         $("#vimeo_fragment tbody").append(content);
     }
+    hideProgress('#vimeo_fragment');
 }
 
 async function loadPinterestVideos(query){
     const data = await sendMessage({action: 'get_pinterest_videos', search_query: query});
-
+    
     if(!data['videosFound']){
         return;
     }
@@ -88,18 +91,20 @@ async function loadPinterestVideos(query){
                     <i class="fa fa-pinterest"></i> Watch
                 </a>
                 <button type="button" 
-                    class="btn btn-primary btn-download" 
+                    class="btn btn-primary btn-download ladda-button" 
                     title="Download"
                     data-url="${video['url']}" 
-                    data-website="instagram"
+                    data-website="pinterest"
+                    data-style="slide-right"
                 >
                     <i class="fa fa-download"></i> 
                     Download
                 </button>
             </td>
         </tr>`;
-        $("#pinterest_fragment tbdoy").append(content);
+        $("#pinterest_fragment tbody").append(content);
     }
+    hideProgress('#pinterest_fragment');
 }
 
 async function loadFacebookVideos(query) {
@@ -122,10 +127,11 @@ async function loadFacebookVideos(query) {
                         Watch
                     </a>
                     <button type="button" 
-                        class="btn btn-primary btn-download" 
+                        class="btn btn-primary btn-download ladda-button" 
                         title="Download"
                         data-url="${video['url']}" 
                         data-website="facebook"
+                        data-style="slide-right"
                     >
                         <i class="fa fa-download"></i> 
                         Download
@@ -134,6 +140,7 @@ async function loadFacebookVideos(query) {
             </tr>`;
         $("#facebook_fragment tbody").append(content);
     }
+    hideProgress('#facebook_fragment');
 }
 
 async function loadInstagramVideos(query) {
@@ -156,10 +163,11 @@ async function loadInstagramVideos(query) {
                         Watch
                     </a>
                     <button type="button" 
-                        class="btn btn-primary btn-download" 
+                        class="btn btn-primary btn-download ladda-button" 
                         title="Download"
                         data-url="${video['url']}" 
                         data-website="instagram"
+                        data-style="slide-right"
                     >
                         <i class="fa fa-download"></i> 
                         Download
@@ -168,6 +176,7 @@ async function loadInstagramVideos(query) {
             </tr>`;
         $("#instagram_fragment tbody").append(content);
     }
+    hideProgress('#instagram_fragment');
 }
 
 function sendMessage(message){
@@ -204,9 +213,15 @@ function openVideosPanel(event){
 }
 
 async function onDownloadButtonClicked() {
+    Ladda.create(this).start();
     await sendMessage({
         action: 'download_video', 
         url: $(this).data('url'),
         website: $(this).data('website'),
     });
+    Ladda.create(this).stop();
+}
+
+function hideProgress(selector) {
+    $(`${selector} .ispinner-container`).remove();
 }
