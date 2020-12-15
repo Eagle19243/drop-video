@@ -1,16 +1,20 @@
 var k = false,l = false,m = false;
 
-if(isSearchPage()){
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchText = urlParams.get('SearchText');
-    loadJSPanel();
-    loadYoutubeVideos(searchText);
-    loadVimeoVideos(searchText);
-    loadPinterestVideos(searchText);
-    loadFacebookVideos(searchText);
-    loadInstagramVideos(searchText);
-    initEvents();
-    // insertSheetAndProcess();
+init();
+
+async function init() {
+    if(isSearchPage()){
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchText = urlParams.get('SearchText');
+        loadJSPanel();
+        initEvents();
+        loadYoutubeVideos(searchText);
+        loadVimeoVideos(searchText);
+        loadPinterestVideos(searchText);
+        await loadFacebookVideos(searchText);
+        await loadInstagramVideos(searchText);
+        // insertSheetAndProcess();
+    }
 }
 
 // $(window).resize(function () {

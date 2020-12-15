@@ -37,8 +37,10 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
         });
     }
     else if(request.action == 'get_instagram_videos'){
-        getYoutubeVideos(request.search_query)
+        console.log('get_instagram_videos');
+        getInstagramVideos(request.search_query)
         .then(videos => {
+            console.log('get_instagram_videos', videos);
             sendResponse({ videosFound: true, videos: videos });
         })
         .catch(error => {
@@ -158,21 +160,18 @@ async function getDownloadUrl(url, website){
     return data.data;
 }
 
-function getInstagramVideos(title){
-    return new Promise((resolve, reject) => {
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=relevance&key=AIzaSyD6Q0keD3k2PY4cbYWVJd4kYtkZ3nLXSZU&q=${title}`)
-        .then(resp => resp.json())
-        .then(data=>{
-            let videos = data.items.map(item=>{
-                return {
-                    thumbnail: item.snippet.thumbnails.medium.url,
-                    title: item.snippet.title,
-                    url: `https://www.youtube.com/watch?v=${item.id.videoId}`
-                }
-            })
-
-            console.log(videos)
-            resolve(videos)
+async function getInstagramVideos(query){
+    const response = await fetch('http://127.0.0.1:3000/video/get', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query,
+            website: 'instagram',
         })
     });
+    const data = await response.json();
+    return data.data;
 }

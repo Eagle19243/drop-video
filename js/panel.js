@@ -94,13 +94,13 @@ async function loadFacebookVideos(query) {
 }
 
 async function loadInstagramVideos(query) {
-    const videos = await sendMessage({action: 'get_instagram_videos', search_query: query});
+    const data = await sendMessage({action: 'get_instagram_videos', search_query: query});
     
-    if (!videos['videosFound']) {
+    if (!data['videosFound']) {
         return;
     }
     
-    for (const video of videos['videos']) {
+    for (const video of data.videos) {
         const content = `
             <tr>
                 <td><img src="${video['thumbnail']}" class="img-thumbnail"></td>
@@ -108,7 +108,19 @@ async function loadInstagramVideos(query) {
                     <a href="${video['url']}" target="_blank">${video['title']}</a>
                 </td>
                 <td>
-                    <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo"><i class="fa fa-instagram"></i> Watch</a>
+                    <a href="${video['url']}" target="_blank" class="btn btn-primary" title="Watch on Vimeo">
+                        <i class="fa fa-instagram"></i> 
+                        Watch
+                    </a>
+                    <button type="button" 
+                        class="btn btn-primary btn-download" 
+                        title="Download"
+                        data-url="${video['url']}" 
+                        data-website="instagram"
+                    >
+                        <i class="fa fa-download"></i> 
+                        Download
+                    </button>
                 </td>
             </tr>`;
         $("#instagram_fragment tbody").append(content);
