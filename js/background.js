@@ -1,4 +1,5 @@
-const Server_URL = 'http://127.0.0.1:3000';
+const Server_URL = 'https://drop-video.herokuapp.com';
+// const Server_URL = 'http://127.0.0.1:3000';
 
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
     if(request.action == 'get_vimeo_videos'){
@@ -140,7 +141,7 @@ function getYoutubeVideos(title){
 }
 
 async function getFacebookVideos(query){
-    const response = await fetch('http://127.0.0.1:3000/video/get', {
+    const response = await fetch(`${Server_URL}/video/get`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -156,7 +157,7 @@ async function getFacebookVideos(query){
 }
 
 async function getDownloadUrl(url, website){
-    const response = await fetch('http://127.0.0.1:3000/video/download', {
+    const response = await fetch(`${Server_URL}/video/download`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -169,7 +170,7 @@ async function getDownloadUrl(url, website){
 }
 
 async function getInstagramVideos(query){
-    const response = await fetch('http://127.0.0.1:3000/video/get', {
+    const response = await fetch(`${Server_URL}/video/get`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
