@@ -1,5 +1,5 @@
-// const Server_URL = 'https://drop-video.herokuapp.com';
-const Server_URL = 'http://127.0.0.1:3000';
+const Server_URL = 'https://drop-video.herokuapp.com';
+// const Server_URL = 'http://127.0.0.1:3000';
 
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
     if(request.action == 'get_vimeo_videos'){
