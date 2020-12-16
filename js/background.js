@@ -1,5 +1,5 @@
-const Server_URL = 'https://drop-video.herokuapp.com';
-// const Server_URL = 'http://127.0.0.1:3000';
+// const Server_URL = 'https://drop-video.herokuapp.com';
+const Server_URL = 'http://127.0.0.1:3000';
 
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
     if(request.action == 'get_vimeo_videos'){
@@ -157,16 +157,29 @@ async function getFacebookVideos(query){
 }
 
 async function getDownloadUrl(url, website){
-    const response = await fetch(`${Server_URL}/video/download`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url, website })
-    });
-    const data = await response.json();
-    return data.data;
+    if (website === 'instagram') {
+        const response = await fetch(url, {
+            method: 'GET',
+        });
+        const content = await response.text();
+        const meta = $(content).find("meta[property='og:video']");
+        console.log('meta', meta);
+        if (meta) {
+            return meta.attr('content');
+        }
+        return null;
+    } else {
+        const response = await fetch(`${Server_URL}/video/download`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url, website })
+        });
+        const data = await response.json();
+        return data.data;
+    }
 }
 
 async function getInstagramVideos(query){
