@@ -162,10 +162,12 @@ async function getDownloadUrl(url, website){
             method: 'GET',
         });
         const content = await response.text();
-        const meta = $(content).find("meta[property='og:video']");
+        const el = document.createElement('div');
+        el.innerHTML = content;
+        const meta = el.querySelector("meta[property='og:video']");
         console.log('meta', meta);
         if (meta) {
-            return meta.attr('content');
+            return meta.getAttribute('content');
         }
         return null;
     } else {
