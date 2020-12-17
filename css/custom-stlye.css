@@ -54,6 +54,7 @@
 .video-title a{
     font-weight: 700;
     color: black !important;
+    word-break: break-all;
 }
 
 .video-title a:hover{
